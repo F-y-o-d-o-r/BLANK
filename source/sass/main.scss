@@ -1,0 +1,51 @@
+@import "fonts";
+@import "libs";
+@import "vars";
+
+/*standart - start*/
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-size: 10px;
+  min-width: 320px;
+  position: relative;
+  /*font-family: $default-font; */
+  line-height: 1.65;
+  overflow-x: hidden;
+  opacity: 1;
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/*standart - end*/
+
+.test {
+  font-family: "Roboto", sans-serif;
+}
+.test2 {
+  font-family:"RobotoBold", sans-serif;
+  font-weight: bold;
+}
+/*custom start*/
+
+
+
+
+//@import "../blocks/header/header.scss";
+@import "media"; // Всегда в конце
