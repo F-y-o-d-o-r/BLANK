@@ -1,0 +1,16 @@
+extends common/layout
+
+mixin name()
+    p
+
+block vars
+    - var title = "Title - index" //120 символов
+    - var bodyClass = "wrap_this_page"
+
+block content
+    main
+        h1 fdfgfg1
+        +name(
+        )
+
+    include header/header
