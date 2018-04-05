@@ -90,7 +90,7 @@ var config = {
         baseDir: "./prod" // Директория для сервера
     },
     //tunnel: true,
-    //tunnel: "Fyodor", //Demonstration page: http://myprogect.localtunnel.me//https://localtunnel.github.io/www/
+    //tunnel: "fyodor", //Demonstration page: https://fyodor.localtunnel.me //http://myprogect.localtunnel.me//https://localtunnel.github.io/www/
     host: 'localhost',
     port: 63341, //9000,//8080
     logPrefix: "Frontend",
