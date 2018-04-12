@@ -78,7 +78,7 @@ var path = {
         //html: 'source/**/*.html',
         pug: ['source/blocks/**/*.pug', 'source/standart_blocks/**/*.pug'],
         js: ['source/blocks/**/*.js', 'source/js/main.js', 'source/standart_blocks/**/*.js'],
-        style: ['source/blocks/**/*.scss', 'source/blocks/**/*.sass', 'source/sass/main.sass', 'source/standart_blocks/**/*.scss', 'source/sass/*.sass'],
+        style: ['source/blocks/**/*.scss', 'source/blocks/**/*.sass', 'source/sass/main.sass', 'source/standart_blocks/**/*.scss', 'source/sass/**/*.sass'],
         img: 'source/img/**/*.*',
         fonts: 'source/fonts/**/*.*',
         lib: 'source/libs/**/*.js' //jquery & libraries
