@@ -48,6 +48,8 @@ var gulp = require('gulp'),// Подключаем Gulp
     spritesmith = require('gulp.spritesmith'),//делаем спрайты
     pug = require('gulp-pug'),
     sassGlob = require('gulp-sass-glob'), //@import "vars/**/*.scss";    - dir import in sass
+    svgSprite = require('gulp-svg-sprites'), //svg - 1 - svg>use xlink:href="#id" (после загрузки инлайново на страницу с дисплей нан). 2 - svg>use xlink:href='/adress/img.svg#id'
+    filter = require('gulp-filter'),
     reload = browserSync.reload;
 /******************************************************************************/
 var path = {
@@ -59,7 +61,9 @@ var path = {
         img: 'prod/img',
         fonts: 'prod/fonts',
         spritesimg: 'source/img/sprites/',
-        spritesstyles: 'source/sprites/styles/'
+        spritesstyles: 'source/sprites/other/styles/',
+        spritesSvg: 'source/img/sprites/',
+        spritesSvgStyles: 'source/libs/svgStyles/',
     },
     source: { //Пути откуда брать исходники
         //html: ['source/*.html'], //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .html
@@ -95,7 +99,8 @@ var path = {
         ],//sass библиотек
         img: 'source/img/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
         fonts: 'source/fonts/**/*.*',
-        sprites: 'source/sprites/*.*',
+        sprites: 'source/sprites/other/*.*',
+        spritesSvg: 'source/sprites/svg/*.*',
         htacces: 'source/.htacces'
         // [
         // 'app/libs/jquery/dist/jquery.min.js',
@@ -122,6 +127,13 @@ var path = {
         img: 'source/img/**/*.*',
         fonts: 'source/fonts/**/*.*',
         lib: 'source/libs/**/*.js' //jquery & libraries
+    },
+    dell: {
+        prod: [
+            'prod',
+            'source/sprites/other/styles',
+            'source/libs/svgStyles',
+            'source/img/sprites']
     }
 };
 //Создадим переменную с настройками нашего dev сервера:
@@ -296,6 +308,16 @@ gulp.task('sprite', function () {
     spriteData.img.pipe(gulp.dest(path.build.spritesimg)); // путь, куда сохраняем картинку
     spriteData.css.pipe(gulp.dest(path.build.spritesstyles)); // путь, куда сохраняем стили
 });
+//Таск по svg спрайтам
+gulp.task('spriteSvg', function () {
+    return gulp.src(path.source.spritesSvg)
+        .pipe(svgSprite({
+            //mode: "symbol",
+        }))
+        .pipe(gulp.dest(path.build.spritesSvgStyles))
+        .pipe(filter("**/*.svg"))  // Filter out everything except the SVG file
+        .pipe(gulp.dest(path.build.spritesSvg))
+});
 /******************************************************************************/
 //Шрифты просто копируем
 gulp.task('fonts', function () {
@@ -311,7 +333,7 @@ gulp.task('htacces', function () {
 /******************************************************************************/
 //удалим папку prod
 gulp.task('del', function () {
-    return del.sync('prod');
+    return del.sync(path.dell.prod);
 });
 /******************************************************************************/
 //таск с именем «build», который будет запускать все
@@ -322,7 +344,8 @@ gulp.task('build', [
     'style',
     'fonts',
     'htacces',
-    //'sprite',
+    'sprite',
+    'spriteSvg',
     'image',
     'lib-sass',
     'lib-css',

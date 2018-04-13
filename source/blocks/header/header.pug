@@ -3,3 +3,14 @@ include ../../standart_blocks/burger/burger
 h2#burger-code Burger
 i.fas.fa-euro-sign.fa-5x
 +burger('<p>Burger</p>', 'burger-code', 'blocks-library__code--shown')
+
+
+mixin svg(svg_file, svg_id, svg_class, svg_title)
+    span.icon
+        svg(class=svg_class, aria-hidden='true', title=svg_title)
+            use(xlink:href= svg_file + '#' + svg_id)
+
+
+//p
+    +svg("img/sprites/svg/sprite.svg", "test", "svgs", "")
+    //img(src='/img/sprites/svg/sprite.svg')
