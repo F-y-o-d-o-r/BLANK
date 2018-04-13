@@ -5,6 +5,8 @@
 //4. Если нужен дополнительный пакет: npm install --save-dev plugin-name - Затем запустите следующую команду, чтобы npm установил копию Gulp в текущем проекте в качестве необходимого пакета.
 //5. touch gulpfile.js - создание
 
+//!!! npm outdated - проверит актуальные версии плагинов   !!! потом можно npm update
+
 //DIFF INFO
 //Существует плагин gulp-load-plugins который позволяет не писать всю эту лапшу из require.
 //bower пакеты можно подключать через такой плагин как gulp-bower
@@ -53,6 +55,7 @@ var path = {
         html: 'prod',
         js: 'prod/js',
         style: 'prod/css',
+        libsstyle: 'source/libs/concat_from_node_modules',
         img: 'prod/img',
         fonts: 'prod/fonts',
         spritesimg: 'source/img/sprites/',
@@ -62,9 +65,34 @@ var path = {
         //html: ['source/*.html'], //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .html
         pug: ['source/blocks/*.pug'], //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .pug
         js: ['source/js/main.js'], //В стилях и скриптах нам понадобятся только main файлы
-        lib: 'source/libs/**/*.js', //jquery & libraries
+        lib: [
+            'source/libs/**/*.js',
+            'node_modules/bootstrap/dist/js/bootstrap.min.js', //bootstrap 4
+            'node_modules/popper.js/dist/umd/popper.min.js', //popper for bootstrap
+            'node_modules/jquery/dist/jquery.min.js',
+            'node_modules/owl.carousel/dist/owl.carousel.min.js',
+            'node_modules/scrollmagic/scrollmagic/minified/ScrollMagic.min.js',
+            'node_modules/scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js',
+            'node_modules/slick-carousel/slick/slick.min.js',
+            'node_modules/lightslider/dist/js/lightslider.min.js',
+            'node_modules/gsap/src/minified/TweenMax.min.js',
+            'node_modules/wowjs/dist/wow.min.js',
+        ], //jquery & libraries
         style: ['source/sass/main.sass'],
-        libsstyles: 'source/libs/**/*.css',//стили библиотек
+        libsstyles: [
+            'source/libs/**/*.css',
+            'node_modules/animate.css/animate.min.css',
+            'node_modules/normalize.css/normalize.css',
+            'node_modules/owl.carousel/dist/assets/owl.carousel.min.css',
+            'node_modules/owl.carousel/dist/assets/owl.theme.default.min.css',
+            'node_modules/node_modules/slick-carousel/slick/slick.css',
+            'node_modules/lightslider/dist/css/lightslider.min.css',
+        ],//стили библиотек
+        libssassstyles: [
+            'node_modules/bootstrap/scss/bootstrap.scss',
+            'node_modules/bootstrap/scss/bootstrap-grid.scss',
+            'node_modules/bootstrap/scss/bootstrap-reboot.scss',
+        ],//sass библиотек
         img: 'source/img/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
         fonts: 'source/fonts/**/*.*',
         sprites: 'source/sprites/*.*',
@@ -76,9 +104,21 @@ var path = {
     },
     watch: { //Тут мы укажем, за изменением каких файлов мы хотим наблюдать
         //html: 'source/**/*.html',
-        pug: ['source/blocks/**/*.pug', 'source/standart_blocks/**/*.pug'],
-        js: ['source/blocks/**/*.js', 'source/js/main.js', 'source/standart_blocks/**/*.js'],
-        style: ['source/blocks/**/*.scss', 'source/blocks/**/*.sass', 'source/sass/main.sass', 'source/standart_blocks/**/*.scss', 'source/sass/**/*.scss'],
+        pug: [
+            'source/blocks/**/*.pug',
+            'source/standart_blocks/**/*.pug'
+        ],
+        js: [
+            'source/blocks/**/*.js',
+            'source/js/main.js',
+            'source/standart_blocks/**/*.js'
+        ],
+        style: [
+            'source/blocks/**/*.scss',
+            'source/blocks/**/*.sass',
+            'source/sass/main.sass', 'source/standart_blocks/**/*.scss',
+            'source/sass/**/*.scss'
+        ],
         img: 'source/img/**/*.*',
         fonts: 'source/fonts/**/*.*',
         lib: 'source/libs/**/*.js' //jquery & libraries
@@ -175,8 +215,25 @@ gulp.task('js', function () {
         })); //И перезагрузим сервер
 });
 /******************************************************************************/
+//переносим библиотеки - sass в один файл css
+gulp.task('lib-sass', function () {
+    gulp.src(path.source.libssassstyles) //Выберем наши стили библиотек
+    //.pipe(sourcemaps.init())
+        .pipe(sassGlob()) //@import "vars/**/*.scss";   - dir import in sass
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(autoPrefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], {
+            cascade: true
+        })) //Добавим вендорные префиксы
+        //.pipe(sourcemaps.write())
+        .pipe(rename({suffix: '.min', prefix: ''}))
+        .pipe(duration('css'))
+        .pipe(gulp.dest(path.build.libsstyle)) //
+        .pipe(reload({
+            stream: true
+        }));
+});
 //переносим библиотеки - css в один файл - переношу в css
-gulp.task('lib-css', function () {
+gulp.task('lib-css', /*['lib-sass'],*/ function () {
     gulp.src(path.source.libsstyles) //Найдем наши файлы
         .pipe(concat('libs.min.css'))
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)) //min
@@ -187,7 +244,7 @@ gulp.task('lib-css', function () {
         })); //И перезагрузим сервер
 });
 //переносим библиотеки - js
-gulp.task('lib', ['lib-css'], function () {
+gulp.task('lib', function () {
     gulp.src(path.source.lib) //Найдем наш файл
         .pipe(gulp.dest(path.build.js)) //Выплюнем готовый файл в build
         .pipe(duration('lib'))
@@ -232,7 +289,8 @@ gulp.task('sprite', function () {
     var spriteData = gulp.src(path.source.sprites)
         .pipe(spritesmith({
             imgName: 'sprite.png',
-            cssName: 'sprite.css',
+            //cssName: 'sprite.sass',
+            cssName: 'sprite.css'
         }));
     //return spriteData.pipe(gulp.dest('source/img/sprites/'));
     spriteData.img.pipe(gulp.dest(path.build.spritesimg)); // путь, куда сохраняем картинку
@@ -264,7 +322,10 @@ gulp.task('build', [
     'style',
     'fonts',
     'htacces',
+    //'sprite',
     'image',
+    'lib-sass',
+    'lib-css',
     'lib'
 ]);
 //таск с именем «work», который будет запускать то что нужно во время работы
