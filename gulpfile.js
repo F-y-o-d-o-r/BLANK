@@ -312,9 +312,18 @@ gulp.task('sprite', function () {
 gulp.task('spriteSvg', function () {
     return gulp.src(path.source.spritesSvg)
         .pipe(svgSprite({
-            //mode: "symbol",
+            //shape: {     // Set maximum dimensions
+                //dimension: {
+                    //maxWidth: 500,
+                    //maxHeight: 500
+                //},
+                //spacing: {         // Add padding
+                    //padding: 0
+                //}
+            //},
+            mode: "symbols",
         }))
-        .pipe(gulp.dest(path.build.spritesSvgStyles))
+        //.pipe(gulp.dest(path.build.spritesSvgStyles))
         .pipe(filter("**/*.svg"))  // Filter out everything except the SVG file
         .pipe(gulp.dest(path.build.spritesSvg))
 });
