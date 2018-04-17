@@ -82,7 +82,11 @@ var path = {
             'node_modules/gsap/src/minified/TweenMax.min.js',
             'node_modules/wowjs/dist/wow.min.js',
         ], //jquery & libraries
-        style: ['source/sass/main.sass'],
+        style: [
+            'source/sass/main.sass',
+            'source/sass/bootstrap.scss'
+        ],
+        styleBootstrap: ['source/sass/bootstrap.scss'],
         libsstyles: [
             'source/libs/**/*.css',
             'node_modules/animate.css/animate.min.css',
@@ -93,9 +97,9 @@ var path = {
             'node_modules/lightslider/dist/css/lightslider.min.css',
         ],//стили библиотек
         libssassstyles: [
-            'node_modules/bootstrap/scss/bootstrap.scss',
-            'node_modules/bootstrap/scss/bootstrap-grid.scss',
-            'node_modules/bootstrap/scss/bootstrap-reboot.scss',
+            //'node_modules/bootstrap/scss/bootstrap.scss',
+            //'node_modules/bootstrap/scss/bootstrap-grid.scss',
+            //'node_modules/bootstrap/scss/bootstrap-reboot.scss',
         ],//sass библиотек
         img: 'source/img/**/*.*', //Синтаксис img/**/*.* означает - взять все файлы всех расширений из папки и из вложенных каталогов
         fonts: 'source/fonts/**/*.*',
@@ -134,7 +138,9 @@ var path = {
             'prod',
             'source/sprites/other/styles',
             'source/libs/svgStyles',
-            'source/img/sprites']
+            'source/img/sprites',
+            'source/libs/concat_from_node_modules'
+        ]
     }
 };
 //Создадим переменную с настройками нашего dev сервера:
@@ -196,6 +202,24 @@ gulp.task('style', function () {
         }));
 });
 /******************************************************************************/
+//Собираем стили bootstrap
+gulp.task('styleBootstrap', function () {
+    gulp.src(path.source.styleBootstrap) //Выберем наш main.scss
+    //.pipe(sourcemaps.init())
+        .pipe(sassGlob()) //@import "vars/**/*.scss";   - dir import in sass
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(autoPrefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], {
+            cascade: true
+        })) //Добавим вендорные префиксы
+        //.pipe(sourcemaps.write())
+        .pipe(rename({suffix: '.min', prefix: ''}))
+        .pipe(duration('cssBootstrap'))
+        .pipe(gulp.dest(path.build.style)) //И в build
+        .pipe(reload({
+            stream: true
+        }));
+});
+/******************************************************************************/
 //Таск по сборке скриптов js + полифилы
 //gulp.task
 gulp.task('js', function () {
@@ -239,7 +263,7 @@ gulp.task('lib-sass', function () {
         })) //Добавим вендорные префиксы
         //.pipe(sourcemaps.write())
         .pipe(rename({suffix: '.min', prefix: ''}))
-        .pipe(duration('css'))
+        .pipe(duration('lib-sass'))
         .pipe(gulp.dest(path.build.libsstyle)) //
         .pipe(reload({
             stream: true
@@ -290,7 +314,7 @@ gulp.task('image', /*['sprite'],*/ function () {
             use: [pngquant()],
             interlaced: true
         }))
-        .pipe(duration('img'))
+        .pipe(duration('image'))
         .pipe(gulp.dest(path.build.img)) //И бросим в build
         .pipe(reload({
             stream: true
@@ -326,6 +350,7 @@ gulp.task('spriteSvg', function () {
         }))
         //.pipe(gulp.dest(path.build.spritesSvgStyles))
         .pipe(filter("**/*.svg"))  // Filter out everything except the SVG file
+        .pipe(duration('spriteSvg'))
         .pipe(gulp.dest(path.build.spritesSvg))
 });
 /******************************************************************************/
@@ -333,12 +358,14 @@ gulp.task('spriteSvg', function () {
 gulp.task('fonts', function () {
     gulp.src(path.source.fonts)
         .pipe(gulp.dest(path.build.fonts))
+        .pipe(duration('fonts'))
 });
 /******************************************************************************/
 //.htacces просто копируем
 gulp.task('htacces', function () {
     gulp.src(path.source.htacces)
         .pipe(gulp.dest('prod/'))
+        .pipe(duration('htacces'))
 });
 /******************************************************************************/
 //удалим папку prod
@@ -351,10 +378,11 @@ gulp.task('build', [
     //'html',
     'pug',
     'js',
-    'lib',
     'lib-sass',
     'lib-css',
+    'lib',
     'style',
+    'styleBootstrap',
     'fonts',
     'htacces',
     'sprite',
