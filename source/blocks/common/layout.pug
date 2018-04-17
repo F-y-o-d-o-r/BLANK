@@ -4,6 +4,8 @@ html(lang='ru')
     head
         title #{title}
         block head
+            - var headDescription = "main page"
+            - var headKeywords = "words"
             include head
     body(class= bodyClass)
         block noscript
