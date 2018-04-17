@@ -122,7 +122,8 @@ var path = {
             'source/blocks/**/*.scss',
             'source/blocks/**/*.sass',
             'source/sass/main.sass', 'source/standart_blocks/**/*.scss',
-            'source/sass/**/*.scss'
+            'source/sass/**/*.scss',
+            'source/sass/**/*.sass'
         ],
         img: 'source/img/**/*.*',
         fonts: 'source/fonts/**/*.*',
@@ -350,15 +351,15 @@ gulp.task('build', [
     //'html',
     'pug',
     'js',
+    'lib',
+    'lib-sass',
+    'lib-css',
     'style',
     'fonts',
     'htacces',
     'sprite',
     'spriteSvg',
-    'image',
-    'lib-sass',
-    'lib-css',
-    'lib'
+    'image'
 ]);
 //таск с именем «work», который будет запускать то что нужно во время работы
 gulp.task('work', [
