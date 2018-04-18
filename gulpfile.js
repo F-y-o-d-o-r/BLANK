@@ -68,7 +68,10 @@ var path = {
     source: { //Пути откуда брать исходники
         //html: ['source/*.html'], //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .html
         pug: ['source/blocks/*.pug'], //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .pug
-        js: ['source/js/main.js'], //В стилях и скриптах нам понадобятся только main файлы
+        js: [
+            'source/js/main.js',
+            'source/blocks/**/*.js'
+        ], //В стилях и скриптах нам понадобятся только main файлы
         lib: [
             'source/libs/**/*.js',
             'node_modules/bootstrap/dist/js/bootstrap.min.js', //bootstrap 4

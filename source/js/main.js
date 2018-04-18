@@ -43,6 +43,6 @@ var x = (function () {
 })();
 
 //подключаем из своих блоков скрипіт
-//= ../blocks/index/index.js
+
 //подключаем блоки стандартные, которые нужны
 //= ../standart_blocks/burger/burger.js
