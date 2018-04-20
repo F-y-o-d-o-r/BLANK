@@ -62,10 +62,12 @@ var path = {
         libsstyle: 'source/libs/concat_from_node_modules',
         img: 'prod/img',
         fonts: 'prod/fonts',
-        spritesimg: 'source/img/sprites/',
-        spritesstyles: 'source/sprites/other/styles/',
-        spritesSvg: 'source/img/sprites/',
-        spritesSvgStyles: 'source/libs/svgStyles/',
+        spritesimg: 'source/sprites/ready/',
+        //spritesstyles: 'source/sprites/other/styles/',
+        spritesstyles: 'source/sprites/ready/',
+        spritesSvg: 'source/sprites/ready/',
+        //spritesSvgStyles: 'source/libs/svgStyles/',
+        spritesSvgStyles: 'source/sprites/ready/',
     },
     source: { //Пути откуда брать исходники
         //html: ['source/*.html'], //Синтаксис src/*.html говорит gulp что мы хотим взять все файлы с расширением .html
