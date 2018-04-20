@@ -6,6 +6,7 @@
 //5. touch gulpfile.js - создание
 
 //!!! npm outdated - проверит актуальные версии плагинов   !!! потом можно npm update
+//npm i npm вроде тоже обновляет все?
 
 //DIFF INFO
 //Существует плагин gulp-load-plugins который позволяет не писать всю эту лапшу из require.
@@ -50,6 +51,7 @@ var gulp = require('gulp'),// Подключаем Gulp
     sassGlob = require('gulp-sass-glob'), //@import "vars/**/*.scss";    - dir import in sass
     svgSprite = require('gulp-svg-sprites'), //svg - 1 - svg>use xlink:href="#id" (после загрузки инлайново на страницу с дисплей нан). 2 - svg>use xlink:href='/adress/img.svg#id'
     filter = require('gulp-filter'),
+    cache = require('gulp-cache'), // Подключаем библиотеку кеширования
     reload = browserSync.reload;
 /******************************************************************************/
 var path = {
@@ -309,14 +311,14 @@ gulp.task('lib', function () {
 //Таск по картинкам
 gulp.task('image', /*['sprite'],*/ function () {
     gulp.src(path.source.img) //Выберем наши картинки
-        .pipe(imageMin({ //Сожмем их
+        .pipe(cache(imageMin({ //Сожмем их
             progressive: true,
             svgoPlugins: [{
                 removeViewBox: false
             }],
             use: [pngquant()],
             interlaced: true
-        }))
+        })))
         .pipe(duration('image'))
         .pipe(gulp.dest(path.build.img)) //И бросим в build
         .pipe(reload({
@@ -341,13 +343,13 @@ gulp.task('spriteSvg', function () {
     return gulp.src(path.source.spritesSvg)
         .pipe(svgSprite({
             //shape: {     // Set maximum dimensions
-                //dimension: {
-                    //maxWidth: 500,
-                    //maxHeight: 500
-                //},
-                //spacing: {         // Add padding
-                    //padding: 0
-                //}
+            //dimension: {
+            //maxWidth: 500,
+            //maxHeight: 500
+            //},
+            //spacing: {         // Add padding
+            //padding: 0
+            //}
             //},
             mode: "symbols",
         }))
@@ -371,8 +373,12 @@ gulp.task('htacces', function () {
         .pipe(duration('htacces'))
 });
 /******************************************************************************/
+//очистим кеш
+gulp.task('clear', function () {
+    return cache.clearAll();
+});
 //удалим папку prod
-gulp.task('del', function () {
+gulp.task('del', ['clear'], function () {
     return del.sync(path.dell.prod);
 });
 /******************************************************************************/
