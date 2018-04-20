@@ -146,7 +146,8 @@ var path = {
             'source/sprites/other/styles',
             'source/libs/svgStyles',
             'source/img/sprites',
-            'source/libs/concat_from_node_modules'
+            'source/libs/concat_from_node_modules',
+            'source/sprites/ready'
         ]
     }
 };
