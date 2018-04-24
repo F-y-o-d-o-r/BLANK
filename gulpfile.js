@@ -52,6 +52,7 @@ var gulp = require('gulp'),// Подключаем Gulp
     svgSprite = require('gulp-svg-sprites'), //svg - 1 - svg>use xlink:href="#id" (после загрузки инлайново на страницу с дисплей нан). 2 - svg>use xlink:href='/adress/img.svg#id'
     filter = require('gulp-filter'),
     cache = require('gulp-cache'), // Подключаем библиотеку кеширования
+    strip = require('gulp-strip-comments'), //remove comments
     reload = browserSync.reload;
 /******************************************************************************/
 var path = {
@@ -185,6 +186,7 @@ gulp.task('pug', function () {
         .pipe(pug({
             pretty: false //min
         }))
+        .pipe(strip())
         .pipe(duration('pug'))
         .pipe(gulp.dest(path.build.html))
         .pipe(reload({
