@@ -57,6 +57,7 @@ var gulp = require('gulp'),// Подключаем Gulp
     //TODO
     //https://www.npmjs.com/package/gulp-notify
     //https://www.npmjs.com/package/gulp-plumber
+    //.pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
 /******************************************************************************/
 var path = {
     build: {//Тут мы укажем куда складывать готовые после сборки файлы
