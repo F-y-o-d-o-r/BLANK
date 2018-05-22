@@ -54,6 +54,9 @@ var gulp = require('gulp'),// Подключаем Gulp
     cache = require('gulp-cache'), // Подключаем библиотеку кеширования
     strip = require('gulp-strip-comments'), //remove comments
     reload = browserSync.reload;
+    //TODO
+    //https://www.npmjs.com/package/gulp-notify
+    //https://www.npmjs.com/package/gulp-plumber
 /******************************************************************************/
 var path = {
     build: {//Тут мы укажем куда складывать готовые после сборки файлы
