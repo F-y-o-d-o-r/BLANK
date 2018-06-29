@@ -1,3 +1,44 @@
-node_modules
+# Project based
+src/img/content/*
+/templates
+
+# System Files
+*.zip
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.log
+*.pdf
+*.psd
+*.iml
+*.idea
+
+# System Files
+Thumbs.db
+.DS_Store
+
+# IDEs and editors
+*.sublime-workspace
+/.vscode
+/.idea
+/node_modules
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+
+# IDE - VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
 .idea
-prod
+
+node_modules
