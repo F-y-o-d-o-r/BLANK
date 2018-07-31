@@ -29,20 +29,5 @@ $(document).ready(function () {
 });
 
 
-var x = (function () {
-    $(document).ready(function () {
-        $('body').on('click', '#button', x.func1);
-    });
-    return {
-        func1: function () {
-            alert('test');
-        },
-        y: 10,
-        z: true,
-    }
-})();
 
-//подключаем из своих блоков скрипіт
 
-//подключаем блоки стандартные, которые нужны
-//= ../standart_blocks/burger/burger.js

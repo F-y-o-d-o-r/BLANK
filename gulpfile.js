@@ -6,7 +6,6 @@
 //5. touch gulpfile.js - создание
 
 //!!! npm outdated - проверит актуальные версии плагинов   !!! потом можно npm update
-//npm i npm вроде тоже обновляет все?
 
 //DIFF INFO
 //Существует плагин gulp-load-plugins который позволяет не писать всю эту лапшу из require.
@@ -83,30 +82,30 @@ var path = {
         ], //В стилях и скриптах нам понадобятся только main файлы
         lib: [
             'source/libs/**/*.js',
-            'node_modules/bootstrap/dist/js/bootstrap.min.js', //bootstrap 4
-            'node_modules/popper.js/dist/umd/popper.min.js', //popper for bootstrap
+            //'node_modules/bootstrap/dist/js/bootstrap.min.js', //bootstrap 4
+            //'node_modules/popper.js/dist/umd/popper.min.js', //popper for bootstrap
             'node_modules/jquery/dist/jquery.min.js',
-            'node_modules/owl.carousel/dist/owl.carousel.min.js',
-            'node_modules/scrollmagic/scrollmagic/minified/ScrollMagic.min.js',
-            'node_modules/scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js',
-            'node_modules/slick-carousel/slick/slick.min.js',
-            'node_modules/lightslider/dist/js/lightslider.min.js',
-            'node_modules/gsap/src/minified/TweenMax.min.js',
-            'node_modules/wowjs/dist/wow.min.js',
+            //'node_modules/owl.carousel/dist/owl.carousel.min.js',
+            //'node_modules/scrollmagic/scrollmagic/minified/ScrollMagic.min.js',
+            //'node_modules/scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min.js',
+            //'node_modules/slick-carousel/slick/slick.min.js',
+            //'node_modules/lightslider/dist/js/lightslider.min.js',
+            //'node_modules/gsap/src/minified/TweenMax.min.js',
+            //'node_modules/wowjs/dist/wow.min.js',
         ], //jquery & libraries
         style: [
             'source/sass/main.sass',
-            'source/sass/bootstrap.scss'
+            //'source/sass/bootstrap.scss'
         ],
         styleBootstrap: ['source/sass/bootstrap.scss'],
         libsstyles: [
             'source/libs/**/*.css',
-            'node_modules/animate.css/animate.min.css',
+            //'node_modules/animate.css/animate.min.css',
             'node_modules/normalize.css/normalize.css',
-            'node_modules/owl.carousel/dist/assets/owl.carousel.min.css',
-            'node_modules/owl.carousel/dist/assets/owl.theme.default.min.css',
-            'node_modules/node_modules/slick-carousel/slick/slick.css',
-            'node_modules/lightslider/dist/css/lightslider.min.css',
+            //'node_modules/owl.carousel/dist/assets/owl.carousel.min.css',
+            //'node_modules/owl.carousel/dist/assets/owl.theme.default.min.css',
+            //'node_modules/node_modules/slick-carousel/slick/slick.css',
+            //'node_modules/lightslider/dist/css/lightslider.min.css',
         ],//стили библиотек
         libssassstyles: [
             //'node_modules/bootstrap/scss/bootstrap.scss',
@@ -127,17 +126,18 @@ var path = {
         //html: 'source/**/*.html',
         pug: [
             'source/blocks/**/*.pug',
-            'source/standart_blocks/**/*.pug'
+            //'source/standart_blocks/**/*.pug'
         ],
         js: [
             'source/blocks/**/*.js',
             'source/js/main.js',
-            'source/standart_blocks/**/*.js'
+            //'source/standart_blocks/**/*.js'
         ],
         style: [
             'source/blocks/**/*.scss',
             'source/blocks/**/*.sass',
-            'source/sass/main.sass', 'source/standart_blocks/**/*.scss',
+            'source/sass/main.sass',
+            //'source/standart_blocks/**/*.scss',
             'source/sass/**/*.scss',
             'source/sass/**/*.sass'
         ],
@@ -170,25 +170,11 @@ var config = {
     open: false,
 };
 /******************************************************************************/
-//собираем html - перешел на pug
-//gulp.task('html', function () {
-//  gulp.src(path.source.html) //Выберем файлы по нужному пути
-//    .pipe(rigger()) //добавляем присоеденённое по ссылкам
-//    //.pipe(sourcemaps.init())
-//    .pipe(htmlmin({collapseWhitespace: true}))
-//    //.pipe(sourcemaps.write())
-//    .pipe(duration('html'))
-//    .pipe(gulp.dest(path.build.html)) //Выплюнем их в папку build
-//    .pipe(reload({
-//      stream: true
-//    })); //И перезагрузим наш сервер для обновлений
-//});
-/******************************************************************************/
 // собираем html - PUG
 gulp.task('pug', function () {
     gulp.src(path.source.pug)
         .pipe(pug({
-            pretty: false //min
+            pretty: true //min
         }))
         .pipe(strip())
         .pipe(duration('pug'))
