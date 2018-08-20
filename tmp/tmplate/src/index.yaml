@@ -3,3 +3,5 @@ ProjectTitle: f
 PageList:
 - file: page.html
   ready: 50
+- file: page2.html
+  ready: 10
